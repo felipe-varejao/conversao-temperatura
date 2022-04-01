@@ -1,0 +1,39 @@
+# Deployment da aplicação conversão
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-conversao
+spec:
+  selector:
+    matchLabels:
+      app: web-conv
+  template:
+    metadata:
+      labels:
+        app: web-conv
+    spec:
+      containers:
+      - name: web-conv
+        image: felipevarejao/conversao-temperatura:latest
+        ports:
+        - containerPort: 8080
+
+
+---
+
+# Deployment do Service da aplicação conversão
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-conv-service
+spec:
+  selector:
+    app: web-conv
+  ports:
+  - port: 80
+    targetPort: 8080
+    nodePort: 30000
+  type: NodePort
+
