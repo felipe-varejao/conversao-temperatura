@@ -46,7 +46,7 @@ jobs:
         uses: Azure/k8s-set-context@v2
         with:
           method: kubeconfig
-          kubconfig: ${{ secrets.k8s_KUBECONFIG }}
+          kubeconfig: ${{ secrets.k8s_KUBECONFIG }}
           
       # Fazer deploy no cluster na cloud
       - name: Deploy to Kubernetes cluster
