@@ -7,7 +7,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
 jobs:
-  build:
+  CI:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.0.0
@@ -32,3 +32,25 @@ jobs:
           tags: |
             felipevarejao/conversao-temperatura:latest
             felipevarejao/conversao-temperatura:v${{ github.run_number }}
+            
+            
+  CD:
+    needs: [CI]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3.0.0
+      
+      # Setar o Kubconfig do cluster para acessar o kubctl
+      - name: Kubernetes Set Context
+        uses: Azure/k8s-set-context@v2
+        with:
+          kubconfig: ${{ secrets.K8S_KUBCONFIG }}
+          
+      # Fazer deploy no cluster na cloud
+      - name: Deploy to Kubernetes cluster
+        uses: Azure/k8s-deploy@v3.0
+        with:
+          image: felipevarejao/conversao-temperatura:v${{ github.run_number }}
+          manifest:
+            k8s/Deployment-conversao.yaml
