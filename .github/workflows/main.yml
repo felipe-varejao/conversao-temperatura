@@ -53,5 +53,5 @@ jobs:
         uses: Azure/k8s-deploy@v3.0
         with:
           image: felipevarejao/conversao-temperatura:v${{ github.run_number }}
-          manifest:
+          manifest: |
             k8s/Deployment-conversao.yaml
