@@ -19,14 +19,16 @@ jobs:
          #Nome e senha (Armazenados no Secret)
          username: ${{ secrets.DOCKERHUB_USER}}
          password: ${{ secrets.DOCKERHUB_PWD}}
-         
-         
-         
-         
-         
-         
-         context: ./src
+     
+     # Fazer o Build e o Push da Imagem
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v2.10.0
+        with:
+          context: ./src
           #Onde esta o arquivo dockerfile
           file: ./src/Dockerfile
           push: true
           #Imagem com a tag deversão para fazer a build e subir pro docker hub
+          tags: |
+            felipevarejao/conversao-temperatura:latest
+            felipevarejao/conversao-temperatura:v${{ github.run_number }}
